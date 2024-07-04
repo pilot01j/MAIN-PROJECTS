@@ -10,7 +10,7 @@ import random
 # Acces Google pages and extract all information about company , from all pages and save it to articles_list.json
 def search_news_Google_NEWS(search_url):
     # Mechanism to avoid MaxRetryError
-    s = random.randint(25, 45)
+    s = random.randint(25, 40)
     time.sleep(s)
     headers = {
         'User-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '

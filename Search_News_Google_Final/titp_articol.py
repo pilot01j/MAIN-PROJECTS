@@ -1,9 +1,15 @@
 import time
 import g4f
 from g4f.errors import RetryProviderError
+import asyncio
+import ollama
+from openai import OpenAI
+
+
 
 
 def ask_gpt_4(promt: str) -> str:
+    time.sleep(6)
     check_status = True
     while check_status:
         try:
@@ -16,7 +22,30 @@ def ask_gpt_4(promt: str) -> str:
             return response.lower()
         except RetryProviderError:
             print("RetryProviderError occurred in ask_gpt_4. Retrying...")
-            time.sleep(3)
+            time.sleep(6)
+
+def ask_ollama(question):
+    response = ollama.generate(model='llama3', prompt=f"{question}")
+    return response.lower()
+
+
+# Example: reuse your existing OpenAI setup
+
+def ask_lm_studio(question):
+    # Point to the local server
+    client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+
+    completion = client.chat.completions.create(
+        model="lmstudio-community/Meta-Llama-3-8B-Instruct-GGUF",
+        messages=[
+            {"role": "system", "content": "Always answer in rhymes."},
+            {"role": "user", "content": question}
+        ],
+        temperature=0.7,
+    )
+
+    response_content = completion.choices[0].message.content  # Access the content attribute correctly
+    return response_content.lower()
 
 
 # Verificăm dacă șirul conține cuvântul "negativ"
@@ -32,22 +61,18 @@ def check_word(text):
 
 
 def add_tip_articol(title, company_name):
+
     check_status = True
     while check_status:
         try:
-            gpt_result = ask_gpt_4(
-                    f"răspunde doar cu cuvintele 'negativ' sau 'pozitiv' , dacă următorul articol : '{title}' "
-                    f"este pozitiv sau negativ despre compania {company_name}, "
-                    f"nu scrie ca ai analizat articolul, nu scrie cum a fost analizat articolul, "
-                    f"nu scrie motivul alegeri, nu scrie despre rezultatele comaniei , "
-                    f"nu scrie nimic inafara de cuvintele pozitiv sau negativ.")
-            time.sleep(3)
+            gpt_result = ask_lm_studio(f'raspunde scurt daca stirea "{title}" este pozitiva, negativa sau neutru.')
+
             article_type = check_word(str(gpt_result).lower())
             check_status = False
             return article_type
 
         except RetryProviderError:
             print("RetryProviderError occurred in add_tip_articol. Retrying...")
-            time.sleep(3)
+            time.sleep(6)
 
 
