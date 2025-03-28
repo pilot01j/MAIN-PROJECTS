@@ -11,10 +11,10 @@ from system_proxy import get_system_proxy
 
 
 # ----------------------CONSTANTELE-------------------------------------------------------------
-server = 'tar2.sql.maib.local'
-database = 'InsightDataTemp'
-driver = '{ODBC Driver 17 for SQL Server}'
-file_path = r'C:\Users\Marin.M.Mucuta\My_Python\Companii_GovMD\company.xlsx'
+server = '..........'
+database = '..............'
+driver = '{...................}'
+file_path = r'C:\Users\............\My_Python\Companii_GovMD\company.xlsx'
 url = "https://dataset.gov.md/dataset/a1f38191-f35c-4180-8d80-297851a08f60/" \
       "resource/68f16467-5974-47c7-bb51-62ef4d321ed5/download/company.xlsx"
 
